@@ -12,10 +12,9 @@ app.use(cors())
 app.use(express.json({extended:true}))
 app.use(express.urlencoded({ extended: true }));
 dotenv.config()
-
+console.log(process.env.DB_URL)
 mongoose.set('strictQuery', false);
-mongoose.connect(process.env.DB_url,{useNewUrlParser:true,useUnifiedTopology:true})
-.then( () => {
+mongoose.connect(process.env.DB_URL,{useNewUrlParser:true,useUnifiedTopology:true}).then( () => {
     console.log("Connection open")
 }).catch(err => {
     console.log("OOPS !! ERROR",err)
