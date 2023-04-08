@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 dotenv.config()
 console.log(process.env.DB_URL)
 mongoose.set('strictQuery', false);
-mongoose.connect(process.env.DB_URL,{useNewUrlParser:true,useUnifiedTopology:true}).then( () => {
+mongoose.connect("mongodb+srv://karthirajendran12003:karthi12003@cluster0.ocrppjb.mongodb.net/?retryWrites=true&w=majority",{useNewUrlParser:true,useUnifiedTopology:true}).then( () => {
     console.log("Connection open")
 }).catch(err => {
     console.log("OOPS !! ERROR",err)
