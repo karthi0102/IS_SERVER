@@ -23,6 +23,9 @@ mongoose.connect(process.env.DB_url,{useNewUrlParser:true,useUnifiedTopology:tru
 
 
 
+app.get('/',(req,res)=>{
+    res.redirect('/api')
+})
 
 app.get('/api/',async(req,res)=>{
     res.send("Insta Seva ")
