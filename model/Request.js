@@ -9,9 +9,10 @@ const requestSchema = new Schema({
             default:Date.now
         },
         category:String,
-        work:String,
+        service:String,
         status:{
-            type:String
+            type:String,
+            enum:['requested','viewed']
         },
         user:{
            type:Schema.Types.ObjectId,

@@ -7,6 +7,12 @@ const userSchema = new Schema({
     email:String,
     phone:String,
     password:String,
+    requests:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:"Request"
+        }
+    ],
     createdOn:{
         type:Date,
         default:Date.now

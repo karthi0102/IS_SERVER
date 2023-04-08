@@ -21,19 +21,3 @@ module.exports.login = async(req,res)=>{
     }
 }
 
-module.exports.register =async(req,res)=>{
-    const {email,name,phone,password}=req.body;
-    try {
-        const admin = await Admin.findOne({email});
-        if(admin){
-            return res.status(400).json({error:"User already found"})  
-        }
-        const hashpassword = await bcrypt.hash(password,12);
-        const newUser = new Admin({email,phone,name,password:hashpassword});
-        await newUser.save();
-        const token = jwt.sign({email,id:newUser._id},'token',{expiresIn:'10d'})
-       return res.status(200).json({token,user:admin})
-    } catch (error) {
-        res.status(500).json({error})
-    }
-}
