@@ -27,9 +27,9 @@ module.exports.getUserRequests = async(req,res)=>{
 module.exports.addRequest = async(req,res)=>{
     try {
         const {id}=req.body;
-        console.log(id)
+        console.log(id);
         const user = await User.findById(id);
-        console.log(user)
+    
         const request = new Request({...req.body});
         request.user = user;
         await request.save();
