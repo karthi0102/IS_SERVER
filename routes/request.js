@@ -4,7 +4,7 @@ const router=express.Router();
 
 
 router.get('/',getAll);
-router.post('/:id',addRequest)
+router.post('/',addRequest)
 router.get('/:id',getUserRequests);
 router.patch('/:id',changeStatus);
 

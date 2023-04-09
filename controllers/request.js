@@ -26,8 +26,10 @@ module.exports.getUserRequests = async(req,res)=>{
 
 module.exports.addRequest = async(req,res)=>{
     try {
-        const {id}=req.parmas;
+        const {id}=req.body;
+        console.log(id)
         const user = await User.findById(id);
+        console.log(user)
         const request = new Request({...req.body});
         request.user = user;
         await request.save();
@@ -35,9 +37,11 @@ module.exports.addRequest = async(req,res)=>{
         await user.save();
         const admins= await Admin.find({});
         const emails = admins.map(a=> a.email);
-        sendMessage(emails,`A new request i done by ${user.name} on Category${req.body.category} in service ${req.body.service} \r\n Phone number - ${user.phone} Email - ${user.email}`)
+        console.log(emails)
+        sendMessage(emails,`A new request is done by ${user.name} on Category ${req.body.category} in service ${req.body.service} \r\n Phone number - ${user.phone} Email - ${user.email}`)
         res.status(201).json(request);
     } catch (error) {
+        console.log(error)
         res.status(500).json({error})     
     }
 }

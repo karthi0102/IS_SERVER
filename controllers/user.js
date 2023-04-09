@@ -16,7 +16,7 @@ module.exports.login = async(req,res)=>{
         if(!hashPassword){
             res.status(401).json({message:"Password dont match"})
         }
-        pushnotify([deviceId],user.name,'Welcome Back to Insta seva');
+        pushnotify([deviceId],'Welcome Back to Insta seva',user.name);
         const token = jwt.sign({email,id:user._id},'token',{expiresIn:'10d'})
         return res.status(200).json({token,user:user});        
     } catch (error) {
