@@ -1,6 +1,6 @@
 const express = require('express')
-const {login,register}=require('../controllers/user')
-const {otp_sendEmail}=require('../controllers/mail')
+const {login,register}=require('../controllers/user.js')
+const {otp_sendEmail}=require('../controllers/mail.js')
 const router = express.Router();
 
 
