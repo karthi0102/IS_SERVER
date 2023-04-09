@@ -1,5 +1,7 @@
 const User = require('../model/Users')
-const Request = require('../model/Request')
+const Request = require('../model/Request');
+const { pushnotify } = require('./notification');
+
 
 module.exports.getAll = async(req,res)=>{
     try{
@@ -38,8 +40,12 @@ module.exports.addRequest = async(req,res)=>{
 module.exports.changeStatus = async(req,res)=>{
     try {
         const {id}=req.params;
-        const request = await Request.findByIdAndUpdate(id,{...req.body});
+        const request = await Request.findByIdAndUpdate(id,{...req.body}).populate('user');
+        
         await request.save();
+
+        const {deviceId}=request.user;
+        pushnotify([deviceId],request.service,'Your request was accepted by Admin');
         res.status(201).json(request);
     } catch (error) {
         res.status(500).json({error})
