@@ -35,6 +35,33 @@ module.exports.otp_sendEmail = async (req, res) => {
 }
 
 
+module.exports.sendMessage =async(email,message)=>{
+ 
+  let transporter = nodemailer.createTransport({
+   
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, 
+    service: "Gmail",
+    auth: {
+      user: process.env.USER, 
+      pass: process.env.PASS, 
+    },
+  });
+
+  
+  let info = await transporter.sendMail({
+    
+
+    from: "projectkec2024@gmail.com",
+    to: email, 
+    subject: "Message from Insta Seva", 
+    text: "Insta Seva", 
+    html: `<p>${message}<p>`,
+  });
+
+
+}
 
 
 

@@ -1,5 +1,7 @@
 const Service = require('../model/Service.js')
 const Category = require('../model/Category.js')
+const User=require('../model/Users.js')
+const {sendMessage}=require('./mail.js')
 module.exports.addService = async(req,res)=>{
     try {
     
@@ -9,6 +11,9 @@ module.exports.addService = async(req,res)=>{
         const categorymodel = await Category.findOne({title:category});
         categorymodel.services.push(service);
         await categorymodel.save();
+        const user = await User.find({});
+        const emails = user?.map(u => u.email);
+        sendMessage(emails,`A New Service has been added in ${category} Please Check It in the app`)
         res.status(201).json(service)
     } catch (error) {
         console.log(error.message)

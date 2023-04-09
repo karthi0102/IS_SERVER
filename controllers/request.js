@@ -1,6 +1,8 @@
 const User = require('../model/Users')
 const Request = require('../model/Request');
 const { pushnotify } = require('./notification');
+const Admin = require('../model/Admin');
+const {sendMessage}=require('./mail')
 
 
 module.exports.getAll = async(req,res)=>{
@@ -31,6 +33,9 @@ module.exports.addRequest = async(req,res)=>{
         await request.save();
         user.requests.push(request);
         await user.save();
+        const admins= await Admin.find({});
+        const emails = admins.map(a=> a.email);
+        sendMessage(emails,`A new request i done by ${user.name} on Category${req.body.category} in service ${req.body.service} \r\n Phone number - ${user.phone} Email - ${user.email}`)
         res.status(201).json(request);
     } catch (error) {
         res.status(500).json({error})     
@@ -41,11 +46,12 @@ module.exports.changeStatus = async(req,res)=>{
     try {
         const {id}=req.params;
         const request = await Request.findByIdAndUpdate(id,{...req.body}).populate('user');
-        
+
         await request.save();
 
         const {deviceId}=request.user;
-        pushnotify([deviceId],request.service,'Your request was accepted by Admin');
+        pushnotify([deviceId],'Your request was accepted by Admin',request.service);
+        sendMessage(req.user.email,"Your request gave been accepted by Admin");
         res.status(201).json(request);
     } catch (error) {
         res.status(500).json({error})

@@ -5,8 +5,10 @@ const { pushnotify }=require('./notification.js')
 const jwt = require('jsonwebtoken')
 module.exports.login = async(req,res)=>{
     try {
-        const {email,password}=req.body;
+        const {email,password,deviceId}=req.body;
         const user = await User.findOne({email});
+        user.deviceId=deviceId;
+        await user.save();
         if(!user){
             res.status(404).json({error:"User not Found"});
         }
@@ -32,7 +34,7 @@ module.exports.register =async(req,res)=>{
         }
         const hashpassword = await bcrypt.hash(password,12);
         const newUser = new User({email,phone,name,password:hashpassword,deviceId});
-        pushnotify([deviceId],name,'Welcome to Insta seva');
+        pushnotify([deviceId],'Welcome to Insta seva',name);
         await newUser.save();
         const token = jwt.sign({email,id:newUser._id},'token',{expiresIn:'10d'})
         
