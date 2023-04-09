@@ -11,10 +11,10 @@ const requestRoutes = require('./routes/request')
 app.use(cors())
 app.use(express.json({extended:true}))
 app.use(express.urlencoded({ extended: true }));
-dotenv.config()
-console.log(process.env.DB_URL)
+dotenv.config();
+const DB_URL = process.env.DB;
 mongoose.set('strictQuery', false);
-mongoose.connect("mongodb+srv://karthirajendran12003:karthi12003@cluster0.ocrppjb.mongodb.net/?retryWrites=true&w=majority",{useNewUrlParser:true,useUnifiedTopology:true}).then( () => {
+mongoose.connect(DB_URL,{useNewUrlParser:true,useUnifiedTopology:true}).then( () => {
     console.log("Connection open")
 }).catch(err => {
     console.log("OOPS !! ERROR",err)
