@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const { pushnotify }=require('./notification.js')
 
 const jwt = require('jsonwebtoken')
+
 module.exports.login = async(req,res)=>{
     try {
         const {email,password,deviceId}=req.body;

@@ -29,7 +29,6 @@ module.exports.addRequest = async(req,res)=>{
         const {id}=req.body;
         console.log(id);
         const user = await User.findById(id);
-    
         const request = new Request({...req.body});
         request.user = user;
         await request.save();
@@ -37,8 +36,9 @@ module.exports.addRequest = async(req,res)=>{
         await user.save();
         const admins= await Admin.find({});
         const emails = admins.map(a=> a.email);
-        console.log(emails)
-        sendMessage(emails,`A new request is done by ${user.name} on Category ${req.body.category} in service ${req.body.service} \r\n Phone number - ${user.phone} Email - ${user.email}`)
+        if(emails.length!=0){
+            sendMessage(emails,`A new request is done by ${user.name} on Category ${req.body.category} in service ${req.body.service} \r\n Phone number - ${user.phone} Email - ${user.email}`)
+        }
         res.status(201).json(request);
     } catch (error) {
         console.log(error)
@@ -50,9 +50,7 @@ module.exports.changeStatus = async(req,res)=>{
     try {
         const {id}=req.params;
         const request = await Request.findByIdAndUpdate(id,{...req.body}).populate('user');
-
         await request.save();
-
         const {deviceId}=request.user;
         pushnotify([deviceId],'Your request was accepted by Admin',request.service);
         sendMessage(req.user.email,"Your request gave been accepted by Admin");
