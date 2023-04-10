@@ -17,8 +17,10 @@ module.exports.getAll = async(req,res)=>{
 module.exports.getUserRequests = async(req,res)=>{
     try {  
         const {id}=req.params;
-        const user = await User.findById(id).populate('requests');
-        res.status(200).json(user.requests);
+        const request = await Request.find({}).populate("user",{
+            match: { _id: {$e: id}}
+        });
+        res.status(200).json(request);
     } catch (error) {
         res.status(500).json({error})
     }
@@ -33,9 +35,7 @@ module.exports.addRequest = async(req,res)=>{
         }
         const request = new Request({...req.body});
         request.user = user;
-        user.requests.push(request);
         await request.save();
-        await user.save();
         const admins= await Admin.find({});
         const emails = admins.map(a=> a.email);
         if(emails.length!=0){
