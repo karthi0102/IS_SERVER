@@ -29,10 +29,13 @@ module.exports.addRequest = async(req,res)=>{
         const {id}=req.body;
         console.log(id);
         const user = await User.findById(id);
+        if(!user){
+            return res.status(500).json({message:"User not Found"});
+        }
         const request = new Request({...req.body});
         request.user = user;
-        await request.save();
         user.requests.push(request);
+        await request.save();
         await user.save();
         const admins= await Admin.find({});
         const emails = admins.map(a=> a.email);
@@ -41,10 +44,11 @@ module.exports.addRequest = async(req,res)=>{
         }
         res.status(201).json(request);
     } catch (error) {
-        console.log(error)
+        console.log(error.message)
         res.status(500).send(error)     
     }
 }
+
 
 module.exports.changeStatus = async(req,res)=>{
     try {
