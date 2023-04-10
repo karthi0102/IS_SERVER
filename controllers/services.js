@@ -16,7 +16,7 @@ module.exports.addService = async(req,res)=>{
         sendMessage(emails,`A New Service has been added in ${category} Please Check It in the app`)
         res.status(201).json(service)
     } catch (error) {
-        console.log(error.message)
+
         res.status(500).json({error})
     }
 }
@@ -52,7 +52,7 @@ module.exports.deleteService = async(req,res)=>{
         
         res.status(200).json({message:"Success"})
     } catch (error) {
-        console.log(error.message)
+      
         res.status(500).json({error})
     }
 }

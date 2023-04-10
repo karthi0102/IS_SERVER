@@ -27,9 +27,7 @@ module.exports.otp_sendEmail = async (req, res) => {
     text: "KEC CIRCULAR", 
     html: `<p> Here the OTP for your verification => <b> ${otp} </b><p>`,
   });
-  console.log("Message sent: %s", info.messageId);
  
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
   info.messageId ? res.status(200).json('OTP Send Successfully') : res.status(500).json('Error Occured!')
 
 }
@@ -61,7 +59,7 @@ module.exports.sendMessage =async(email,message)=>{
     });
     
    } catch (error) {
-      console.log(error)
+     
    }
     
 

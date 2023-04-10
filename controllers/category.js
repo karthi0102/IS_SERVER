@@ -31,7 +31,7 @@ module.exports.editCategory = async(req,res)=>{
         await category.save();
         res.status(200).json(category)
     }catch(error){
-        console.log(error.message)
+    
         res.status(500).json({error:error})
     }
 }
@@ -43,7 +43,7 @@ module.exports.deleteCategory = async(req,res)=>{
         
         res.status(200).json({message:"Success"})
     }catch(error){
-        console.log(error.message)
+       
         res.status(500).json({error:error})
     }
 }

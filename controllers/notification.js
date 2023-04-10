@@ -5,7 +5,7 @@ const pushNotificationService=require("../services/notification.js");
 
 
 module.exports.pushnotify=(devices,content,title)=>{
-    console.log(devices)
+    
     const message={
         app_id:process.env.API_ID,
         contents:{en:content},

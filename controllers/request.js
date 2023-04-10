@@ -27,7 +27,6 @@ module.exports.getUserRequests = async(req,res)=>{
 module.exports.addRequest = async(req,res)=>{
     try {
         const {id}=req.body;
-        console.log(id);
         const user = await User.findById(id);
         if(!user){
             return res.status(500).json({message:"User not Found"});
@@ -44,7 +43,6 @@ module.exports.addRequest = async(req,res)=>{
         }
         res.status(201).json(request);
     } catch (error) {
-        console.log(error.message)
         res.status(500).send(error)     
     }
 }
