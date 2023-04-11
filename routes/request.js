@@ -6,6 +6,6 @@ const router=express.Router();
 router.get('/',getAll);
 router.post('/',addRequest)
 router.get('/:id',getUserRequests);
-router.patch('/:id',changeStatus);
+router.patch('/:id/:userId',changeStatus);
 
 module.exports=router;

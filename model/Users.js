@@ -11,6 +11,12 @@ const userSchema = new Schema({
         type:"String",
         default:'-'
     },
+    requests:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:"Request"
+        }
+    ],
     createdOn:{
         type:Date,
         default:Date.now

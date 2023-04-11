@@ -13,10 +13,6 @@ const requestSchema = new Schema({
         status:{
             type:String,
             enum:['requested','viewed']
-        },
-        user:{
-           type:Schema.Types.ObjectId,
-           ref:"User"
         }
 })
 

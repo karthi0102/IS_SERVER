@@ -7,8 +7,8 @@ const {sendMessage}=require('./mail')
 
 module.exports.getAll = async(req,res)=>{
     try{
-        const requests = await Request.find({}).populate('user');
-        res.status(200).json(requests);
+        const requests = await User.find({}).populate('requests')
+        res.status(200).json(requests.requests);
     }catch(error){
         res.status(500).json({error})
     }
@@ -17,11 +17,11 @@ module.exports.getAll = async(req,res)=>{
 module.exports.getUserRequests = async(req,res)=>{
     try {  
         const {id}=req.params;
-        const request = await Request.find({}).populate("user",{
-            match: { _id: {$e: id}}
-        });
-        res.status(200).json(request);
+        const user = await User.findById(id).populate('requests');
+        console.log(user)
+        res.status(200).json(user.requests);
     } catch (error) {
+        console.log(error)
         res.status(500).json({error})
     }
 }
@@ -34,8 +34,9 @@ module.exports.addRequest = async(req,res)=>{
             return res.status(500).json({message:"User not Found"});
         }
         const request = new Request({...req.body});
-        request.user = user;
         await request.save();
+        user.requests.push(request);
+        await user.save();
         const admins= await Admin.find({});
         const emails = admins.map(a=> a.email);
         if(emails.length!=0){
@@ -50,12 +51,13 @@ module.exports.addRequest = async(req,res)=>{
 
 module.exports.changeStatus = async(req,res)=>{
     try {
-        const {id}=req.params;
-        const request = await Request.findByIdAndUpdate(id,{...req.body}).populate('user');
+        const {id,userId}=req.params;
+        const request = await Request.findByIdAndUpdate(id,{...req.body})
         await request.save();
-        const {deviceId}=request.user;
-        pushnotify([deviceId],'Your request was accepted by Admin',request.service);
-        sendMessage(req.user.email,"Your request gave been accepted by Admin");
+        const user = await User.findById(userId);
+        
+        pushnotify([user.deviceId],'Your request was accepted by Admin',request.service);
+        sendMessage(user.email,"Your request gave been accepted by Admin");
         res.status(201).json(request);
     } catch (error) {
         res.status(500).json({error})
