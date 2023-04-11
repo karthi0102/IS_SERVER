@@ -7,8 +7,8 @@ const {sendMessage}=require('./mail')
 
 module.exports.getAll = async(req,res)=>{
     try{
-        const requests = await User.find({}).populate('requests')
-        res.status(200).json(requests.requests);
+        const users = await User.find({}).populate('requests')
+        res.status(200).json(users);
     }catch(error){
         res.status(500).json({error})
     }
@@ -44,6 +44,7 @@ module.exports.addRequest = async(req,res)=>{
         }
         res.status(201).json(request);
     } catch (error) {
+
         res.status(500).send(error)     
     }
 }
@@ -51,7 +52,7 @@ module.exports.addRequest = async(req,res)=>{
 
 module.exports.changeStatus = async(req,res)=>{
     try {
-        const {id,userId}=req.params;
+        const {id,userId}=req.body;
         const request = await Request.findByIdAndUpdate(id,{...req.body})
         await request.save();
         const user = await User.findById(userId);
@@ -60,6 +61,7 @@ module.exports.changeStatus = async(req,res)=>{
         sendMessage(user.email,"Your request gave been accepted by Admin");
         res.status(201).json(request);
     } catch (error) {
+        console.log(error)
         res.status(500).json({error})
     }
 }

@@ -5,7 +5,7 @@ const router=express.Router();
 
 router.get('/',getAll);
 router.post('/',addRequest)
+router.patch('/',changeStatus);
 router.get('/:id',getUserRequests);
-router.patch('/:id/:userId',changeStatus);
 
 module.exports=router;
